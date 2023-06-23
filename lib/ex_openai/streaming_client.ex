@@ -105,7 +105,7 @@ defmodule ExOpenAI.StreamingClient do
     {:noreply, state}
   end
 
-  def handle_info(%HTTPoison.AsyncStatus{code: code} = status, state) do
+  def handle_info(%HTTPoison.AsyncStatus{code: code} = _status, state) do
     #Logger.debug("Connection status: #{inspect(status)}")
 
     if code >= 400 do
@@ -115,7 +115,7 @@ defmodule ExOpenAI.StreamingClient do
     {:noreply, state}
   end
 
-  def handle_info(%HTTPoison.AsyncHeaders{} = headers, state) do
+  def handle_info(%HTTPoison.AsyncHeaders{} = _headers, state) do
     #Logger.debug("Connection headers: #{inspect(headers)}")
     {:noreply, state}
   end
