@@ -52,7 +52,7 @@ defmodule ExOpenAI.StreamingClient do
     |> String.trim()
     |> case do
       "[DONE]" ->
-        Logger.debug("[DONE]")
+        #Logger.debug("[DONE]")
         GenServer.cast(pid, :finish)
 
       etc ->
@@ -74,7 +74,7 @@ defmodule ExOpenAI.StreamingClient do
         %HTTPoison.AsyncChunk{chunk: "data: [DONE]\n\n"} = chunk,
         state
       ) do
-    Logger.debug("data: [DONE]")
+    #Logger.debug("data: [DONE]")
     chunk.chunk
     |> String.replace("data: ", "")
     |> handle_chunk(state)
@@ -86,7 +86,7 @@ defmodule ExOpenAI.StreamingClient do
         %HTTPoison.AsyncChunk{chunk: chunk},
         state
       ) do
-    Logger.debug("chunk: #{inspect(chunk)}")
+    #Logger.debug("chunk: #{inspect(chunk)}")
     chunk
     |> String.trim()
     |> String.split("data:")
@@ -106,7 +106,7 @@ defmodule ExOpenAI.StreamingClient do
   end
 
   def handle_info(%HTTPoison.AsyncStatus{code: code} = status, state) do
-    Logger.debug("Connection status: #{inspect(status)}")
+    #Logger.debug("Connection status: #{inspect(status)}")
 
     if code >= 400 do
       GenServer.cast(state.stream_to, {:error, "received error status code: #{code}"})
@@ -116,7 +116,7 @@ defmodule ExOpenAI.StreamingClient do
   end
 
   def handle_info(%HTTPoison.AsyncHeaders{} = headers, state) do
-    Logger.debug("Connection headers: #{inspect(headers)}")
+    #Logger.debug("Connection headers: #{inspect(headers)}")
     {:noreply, state}
   end
 
