@@ -31,7 +31,9 @@ defmodule ExOpenAI.Config do
   def org_key, do: get_config_value(:organization_key)
 
   # API Url
-  def api_url, do: @openai_url
+  def api_url do
+    System.get_env("OPENAI_BASE_URL", @openai_url)
+  end
 
   # HTTP Options
   def http_options, do: get_config_value(:http_options, [])
